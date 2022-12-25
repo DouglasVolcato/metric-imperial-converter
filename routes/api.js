@@ -8,10 +8,29 @@ module.exports = function (app) {
 
   app.get("/api/convert", (req, res) => {
     const input = req.query.input;
+
     const initNum = convertHandler.getNum(input);
     const initUnit = convertHandler.getUnit(input);
 
-    const converted = convertHandler.convert(initNum, initUnit);
-    console.log(converted);
+    const returnNum = convertHandler.convert(initNum, initUnit);
+    const returnUnit = convertHandler.getReturnUnit(initUnit);
+
+    const spelledInitUnit = convertHandler.spellOutUnit(initUnit);
+    const spelledReturnUnit = convertHandler.spellOutUnit(returnUnit);
+
+    const returnString = convertHandler.getString(
+      initNum,
+      spelledInitUnit,
+      returnNum,
+      spelledReturnUnit
+    );
+
+    res.send({
+      initNum: initNum,
+      initUnit: initUnit,
+      returnNum: returnNum,
+      returnUnit: returnUnit,
+      string: returnString,
+    });
   });
 };

@@ -10,15 +10,56 @@ function ConvertHandler() {
   };
 
   this.getReturnUnit = function (initUnit) {
-    let result;
+    const initialUnit = initUnit.toLowerCase();
 
-    return result;
+    switch (initialUnit) {
+      case "mi":
+        return "km";
+
+      case "km":
+        return "mi";
+
+      case "lbs":
+        return "kg";
+
+      case "kg":
+        return "lbs";
+
+      case "gal":
+        return "L";
+
+      case "l":
+        return "gal";
+
+      default:
+        return "Invalid initial unit.";
+    }
   };
 
   this.spellOutUnit = function (unit) {
-    let result;
+    const givenUnity = unit.toLowerCase()
+    switch (givenUnity) {
+      case "mi":
+        return "miles";
 
-    return result;
+      case "km":
+        return "kilometers";
+
+      case "lbs":
+        return "pounds";
+
+      case "kg":
+        return "kilograms";
+
+      case "gal":
+        return "gallons";
+
+      case "l":
+        return "liters";
+
+      default:
+        return "Invalid initial unit.";
+    }
   };
 
   this.convert = function (initNum, initUnit) {
@@ -53,9 +94,7 @@ function ConvertHandler() {
   };
 
   this.getString = function (initNum, initUnit, returnNum, returnUnit) {
-    let result;
-
-    return result;
+    return `${initNum} ${initUnit} converts to ${returnNum} ${returnUnit}`;
   };
 }
 
