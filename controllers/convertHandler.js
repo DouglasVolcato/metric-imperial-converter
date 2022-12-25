@@ -1,12 +1,30 @@
+function roundNum(num) {
+  return Math.round(Number(num) * 100000) / 100000;
+}
+
+function throwInvalidUnitError() {
+  throw new Error("invalid unit");
+}
+
+function throwInvalidNumberError() {
+  throw new Error("invalid number");
+}
+
 function ConvertHandler() {
   this.getNum = function (input) {
-    const result = input.match(/^[0-9]+/)[0];
-    return result;
+    const result = input.match(/^(\-)*[0-9]+/);
+    if(result === null){
+      return 1
+    }
+    if (result[0] <= 0) {
+      throwInvalidNumberError();
+    }
+    return roundNum(result[0]);
   };
 
   this.getUnit = function (input) {
     const result = input.match(/[a-z]+$/i)[0];
-    return result;
+    return result.toLowerCase() === "l" ? "L" : result.toLowerCase();
   };
 
   this.getReturnUnit = function (initUnit) {
@@ -32,12 +50,12 @@ function ConvertHandler() {
         return "gal";
 
       default:
-        return "Invalid initial unit.";
+        return throwInvalidUnitError();
     }
   };
 
   this.spellOutUnit = function (unit) {
-    const givenUnity = unit.toLowerCase()
+    const givenUnity = unit.toLowerCase();
     switch (givenUnity) {
       case "mi":
         return "miles";
@@ -58,7 +76,7 @@ function ConvertHandler() {
         return "liters";
 
       default:
-        return "Invalid initial unit.";
+        return throwInvalidUnitError();
     }
   };
 
@@ -71,25 +89,25 @@ function ConvertHandler() {
 
     switch (initialUnit) {
       case "mi":
-        return initialNumber * miToKm;
+        return roundNum(initialNumber * miToKm);
 
       case "km":
-        return initialNumber / miToKm;
+        return roundNum(initialNumber / miToKm);
 
       case "lbs":
-        return initialNumber * lbsToKg;
+        return roundNum(initialNumber * lbsToKg);
 
       case "kg":
-        return initialNumber / lbsToKg;
+        return roundNum(initialNumber / lbsToKg);
 
       case "gal":
-        return initialNumber * galToL;
+        return roundNum(initialNumber * galToL);
 
       case "l":
-        return initialNumber / galToL;
+        return roundNum(initialNumber / galToL);
 
       default:
-        return "Invalid initial unit.";
+        return throwInvalidUnitError();
     }
   };
 
