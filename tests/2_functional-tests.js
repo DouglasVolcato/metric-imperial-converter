@@ -1,5 +1,6 @@
 const chaiHttp = require("chai-http");
 const chai = require("chai");
+const assert = chai.assert;
 const server = require("../server");
 
 chai.use(chaiHttp);
@@ -10,7 +11,7 @@ suite("Functional Tests", function () {
       .request(server)
       .get("/api/convert?input=10L")
       .end((err, res) => {
-        chai.expect(JSON.parse(res.text)).to.eql({
+        assert.deepEqual(JSON.parse(res.text), {
           initNum: 10,
           initUnit: "L",
           returnNum: 2.64172,
@@ -26,7 +27,7 @@ suite("Functional Tests", function () {
       .request(server)
       .get("/api/convert?input=32g")
       .end((err, res) => {
-        chai.expect(res.text).to.eql("invalid unit");
+        assert.strictEqual(res.text, "invalid unit");
         done();
       });
   });
@@ -36,7 +37,7 @@ suite("Functional Tests", function () {
       .request(server)
       .get("/api/convert?input=3/7.2/4kg")
       .end((err, res) => {
-        chai.expect(res.text).to.eql("invalid number");
+        assert.strictEqual(res.text, "invalid number");
         done();
       });
   });
@@ -46,7 +47,7 @@ suite("Functional Tests", function () {
       .request(server)
       .get("/api/convert?input=3/7.2/4kilomegagram")
       .end((err, res) => {
-        chai.expect(res.text).to.eql("invalid number and unit");
+        assert.strictEqual(res.text, "invalid number and unit");
         done();
       });
   });
@@ -56,7 +57,7 @@ suite("Functional Tests", function () {
       .request(server)
       .get("/api/convert?input=kg")
       .end((err, res) => {
-        chai.expect(JSON.parse(res.text)).to.eql({
+        assert.deepEqual(JSON.parse(res.text), {
           initNum: 1,
           initUnit: "kg",
           returnNum: 2.20462,
