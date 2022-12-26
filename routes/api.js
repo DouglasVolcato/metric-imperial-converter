@@ -12,10 +12,20 @@ module.exports = function (app) {
 
       const initNum = convertHandler.getNum(input);
       const initUnit = convertHandler.getUnit(input);
-
-      const returnNum = convertHandler.convert(initNum, initUnit);
       const returnUnit = convertHandler.getReturnUnit(initUnit);
 
+      const invalidNumber = !initNum;
+      const invalidUnit = !initUnit || !returnUnit;
+
+      if (invalidNumber && invalidUnit) {
+        throw new Error("invalid number and unit");
+      } else if (invalidNumber) {
+        throw new Error("invalid number");
+      } else if (invalidUnit) {
+        throw new Error("invalid unit");
+      }
+
+      const returnNum = convertHandler.convert(initNum, initUnit);
       const spelledInitUnit = convertHandler.spellOutUnit(initUnit);
       const spelledReturnUnit = convertHandler.spellOutUnit(returnUnit);
 

@@ -2,24 +2,16 @@ function roundNum(num) {
   return Math.round(Number(num) * 100000) / 100000;
 }
 
-function throwInvalidUnitError() {
-  throw new Error("invalid unit");
-}
-
-function throwInvalidNumberError() {
-  throw new Error("invalid number");
-}
-
 function ConvertHandler() {
   this.getNum = function (input) {
-    const result = input.match(/^(\-)*[0-9]+/);
-    if(result === null){
-      return 1
+    const result = input.match(/^(\-|\+|\/|\*|\.|[0-9])*/)[0];
+    if (result === "") {
+      return 1;
     }
-    if (result[0] <= 0) {
-      throwInvalidNumberError();
+    if (isNaN(result) || result <= 0) {
+      return false;
     }
-    return roundNum(result[0]);
+    return roundNum(Number(result));
   };
 
   this.getUnit = function (input) {
@@ -50,7 +42,7 @@ function ConvertHandler() {
         return "gal";
 
       default:
-        return throwInvalidUnitError();
+        return false;
     }
   };
 
@@ -76,7 +68,7 @@ function ConvertHandler() {
         return "liters";
 
       default:
-        return throwInvalidUnitError();
+        return false;
     }
   };
 
@@ -107,7 +99,7 @@ function ConvertHandler() {
         return roundNum(initialNumber / galToL);
 
       default:
-        return throwInvalidUnitError();
+        return 0;
     }
   };
 
