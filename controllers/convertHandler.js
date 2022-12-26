@@ -4,19 +4,38 @@ function roundNum(num) {
 
 function ConvertHandler() {
   this.getNum = function (input) {
-    const result = input.match(/^(\-|\+|\/|\*|\.|[0-9])*/)[0];
-    if (result === "") {
+    const englishAlphabet = /[a-zA-Z]/;
+    const idx = input.split("").findIndex((char) => englishAlphabet.test(char));
+    if (idx === 0) {
       return 1;
     }
-    if (
-      input.match(/^[0-9]+/) === null ||
-      isNaN(eval(result)) ||
-      result <= 0 ||
-      (input.match(/(\/)+/g) && input.match(/(\/)+/g).length >= 2)
-    ) {
-      return false;
+
+    let quantityStr;
+    if (idx < 0) {
+      quantityStr = input.slice(0);
+    } else {
+      quantityStr = input.slice(0, idx);
     }
-    return roundNum(Number(eval(result)));
+
+    const quantityArr = quantityStr.split("/");
+
+    if (quantityArr.length === 1) {
+      const quantity = quantityArr[0];
+      if (quantity === "") return false;
+      return isNaN(+quantity) ? false : +quantity;
+    }
+    if (quantityArr.length === 2) {
+      if (quantityArr.some((num) => num === "")) {
+        return false;
+      }
+      const numerator = +quantityArr[0];
+      const denominator = +quantityArr[1];
+      return isNaN(numerator) || isNaN(denominator)
+        ? false
+        : numerator / denominator;
+    }
+
+    return false;
   };
 
   this.getUnit = function (input) {
