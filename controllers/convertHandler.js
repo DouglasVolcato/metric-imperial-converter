@@ -8,10 +8,10 @@ function ConvertHandler() {
     if (result === "") {
       return 1;
     }
-    if (isNaN(result) || result <= 0) {
+    if (input.match(/^[0-9]+/) === null || isNaN(eval(result)) || result <= 0) {
       return false;
     }
-    return roundNum(Number(result));
+    return roundNum(Number(eval(result)));
   };
 
   this.getUnit = function (input) {
