@@ -8,7 +8,12 @@ function ConvertHandler() {
     if (result === "") {
       return 1;
     }
-    if (input.match(/^[0-9]+/) === null || isNaN(eval(result)) || result <= 0) {
+    if (
+      input.match(/^[0-9]+/) === null ||
+      isNaN(eval(result)) ||
+      result <= 0 ||
+      (input.match(/(\/)+/g) && input.match(/(\/)+/g).length >= 2)
+    ) {
       return false;
     }
     return roundNum(Number(eval(result)));
